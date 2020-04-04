@@ -189,3 +189,53 @@ public:
 
 *Runtime: 4 ms  
 Memory Usage: 7 MB*
+
+
+---
+## [Day 4 - Move Zeroes](https://leetcode.com/problems/move-zeroes/)
+
+*Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.*
+
+##### Example:
+```
+Input: [0,1,0,3,12]
+Output: [1,3,12,0,0]
+```
+
+###### Note:
+
+You must do this in-place without making a copy of the array.  
+Minimize the total number of operations.
+
+### Solution:
+
+```c++
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {  
+        fill(remove(nums.begin(), nums.end(), 0), nums.end(), 0);  
+    }
+};
+```
+
+*Another way:*
+
+```c++
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {  
+        unsigned int len = 0;
+        vector<int>::iterator it = nums.begin();
+        while (it != nums.end())
+        {
+            if (*it == 0) {
+                it = nums.erase(it);
+                len++;
+            }
+            else
+                it++;
+        }
+        fill_n(std::back_inserter(nums), len, 0);
+    }
+};
+```
