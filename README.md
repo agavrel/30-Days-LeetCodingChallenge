@@ -632,3 +632,69 @@ public:
 
 *Runtime: 4 ms  
 Memory Usage: 7.5 MB*
+
+
+
+---
+## [Day 6 - Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+
+
+*Given an array of strings, group anagrams together.*  
+
+##### Example:
+```
+Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+Output:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+```
+
+##### Note:
+
+All inputs will be in lowercase.  
+The order of your output does not matter.  
+
+### Solution
+```c++
+static int lambda_0 = []() { std::ios::sync_with_stdio(false); cin.tie(NULL); return 0; }();
+
+class Solution {
+public:
+    uint32_t getHash(string &word) {
+        static int primes[123] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 59, 29, 31, 2, 67, 41, 53, 5, 97, 73, 23, 47, 11, 19, 43, 101, 13, 3, 17, 37, 71, 79, 89, 61, 83}; // 123 because 'a' position is 97 and we add 26. Then we use the 26 first prime numbers and order them by occurence of letters (like 'e' (5th after the streak of 0s) is most frequent so we give it 2 and 101 for 'q' which is the rarest.
+
+        uint32_t hash = 1;
+        for (char &c : word) {
+            int prime = primes[c];
+            hash *= prime;
+        }
+        return hash;
+    }
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<uint32_t, int> anagramHashTable;
+        anagramHashTable.reserve(strs.size() >> 3);
+        unordered_map<uint32_t,int>::iterator it;
+        uint32_t a = 0;
+        uint32_t myHash;
+        vector<vector<string>> res;
+        res.reserve(strs.size() >> 3);
+
+        for (auto &s : strs) {
+            if ((it = anagramHashTable.find(myHash = getHash(s))) == anagramHashTable.end()) { // myHash was not previously compounded
+                anagramHashTable[myHash] = a++; // we create a new entry and set the value to the index of our returned vector.
+                res.push_back(vector<string> {s});
+            }
+            else
+                res[it->second].push_back(s);
+        }
+
+        return res;
+    }
+};
+```
+
+*Runtime: 40 ms  
+Memory Usage: 14 MB*
