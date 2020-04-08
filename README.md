@@ -1,6 +1,6 @@
 # 30-Days-LeetCodingChallenge
 
-C++ Lowest-Latency Solutions for https://leetcode.com/explore/challenge/card/30-day-leetcoding-challenge/
+C++ Most Efficient Solutions for https://leetcode.com/explore/challenge/card/30-day-leetcoding-challenge/
 
 *NB: Add the following at the top to optimize latency*
 
@@ -611,7 +611,7 @@ Explanation: In this case, no transaction is done, i.e. max profit = 0.
 
 ### Solution
 
-```
+```c++
 static int lambda_0 = []() { std::ios::sync_with_stdio(false); cin.tie(NULL); return 0; }();
 
 
@@ -819,3 +819,103 @@ public:
 Memory Usage: 7.1 MB*
 
 **NB: If Leetcode was compiling with c++20 we could potentially get values for the vector at compile time and then trunc it with ```v.erase(v.begin() + num + 1, v.end());```**  
+
+
+---
+## [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements)
+
+*Given a non-empty array of integers, return the k most frequent elements.*
+
+##### Example 1:
+```
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+```
+
+##### Example 2:
+```
+Input: nums = [1], k = 1
+Output: [1]
+```
+
+##### Note:
+
+You may assume k is always valid, 1 ≤ k ≤ number of unique elements.  
+Your algorithm's time complexity must be better than O(n log n), where n is the array's size.  
+
+### Solution
+
+```c++
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        priority_queue<pair<int,int>> pq;
+
+        unordered_map<int,int> m;
+        for (auto &n :nums) m[n]++;
+
+        unordered_map<int,int>::iterator it;
+        for (it = m.begin(); it != m.end(); it++)
+            pq.push(make_pair(it->second,it->first));
+
+        vector<int> ret(k);
+        for(int i = 0; i < k; i++) {
+            ret[i]= pq.top().second;
+            pq.pop();
+        }
+
+        return ret;
+    }
+};
+```
+
+*Runtime: 12 ms  
+Memory Usage: 9.1 MB*
+
+---
+## [Day 8 - Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+
+*Given a non-empty, singly linked list with head node head, return a middle node of linked list.*  
+
+*If there are two middle nodes, return the second middle node.*  
+
+##### Example 1:
+```
+Input: [1,2,3,4,5]
+Output: Node 3 from this list (Serialization: [3,4,5])
+The returned node has value 3.  (The judge's serialization of this node is [3,4,5]).
+Note that we returned a ListNode object ans, such that:
+ans.val = 3, ans.next.val = 4, ans.next.next.val = 5, and ans.next.next.next = NULL.
+```
+
+##### Example 2:
+```
+Input: [1,2,3,4,5,6]
+Output: Node 4 from this list (Serialization: [4,5,6])
+Since the list has two middle nodes with values 3 and 4, we return the second one.
+```
+
+##### Note:
+
+* The number of nodes in the given list will be between 1 and 100.
+
+### Solution
+
+```c++
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode *ret = head;
+        short i = 0;
+        while (head) {
+            head = head->next;
+            if (i++ & 1)
+                ret = ret->next;
+        }
+        return ret;
+    }
+};
+```
+
+*Runtime: 0 ms  
+Memory Usage: 6.3 MB*
