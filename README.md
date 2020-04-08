@@ -759,3 +759,63 @@ public:
 
 *Runtime: 0 ms  
 Memory Usage: 6.6 MB*
+
+---
+## [Counting Bits](https://leetcode.com/problems/counting-bits/)
+
+*Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1's in their binary representation and return them as an array.*
+
+##### Example 1:
+```
+Input: 2
+Output: [0,1,1]
+```
+
+##### Example 2:
+```
+Input: 5
+Output: [0,1,1,2,1,2]
+```
+
+##### Follow up:
+
+It is very easy to come up with a solution with run time O(n*sizeof(integer)). But can you do it in linear time O(n) /possibly in a single pass?  
+Space complexity should be O(n).  
+Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.
+
+### Solution
+
+You will notice a specific pattern
+```
+/* pattern
+       [0,
+           1,                                      2^0
+           1,                  2,                  2^1
+           1,2,                2,3,                2^2
+           1,2,2,3,            2,3,3,4,            2^3
+           1,2,2,3,2,3,3,4,    2,3,3,4,3,4,4,5,    2^4
+           1 ...]                                  2^5
+         */
+```
+
+Which can be translated as the following algorithm:
+
+```c++
+class Solution {
+public:
+    vector<int> countBits(int num) {
+        vector<int> v(num+1);
+        v[0] = 0;
+
+        for (int i = 1 ; i <= num ; i++)
+            v[i] = (i & 1) + v[i >> 1];
+
+        return v;
+    }
+};
+```
+
+*Runtime: 48 ms  
+Memory Usage: 7.1 MB*
+
+**NB: If Leetcode was compiling with c++20 we could potentially get values for the vector at compile time and then trunc it with ```v.erase(v.begin() + num + 1, v.end());```**  
