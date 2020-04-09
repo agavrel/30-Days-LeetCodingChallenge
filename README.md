@@ -920,6 +920,7 @@ public:
 *Runtime: 0 ms  
 Memory Usage: 6.3 MB*
 
+---
 ## [Single Number III](https://leetcode.com/problems/single-number-iii/)
 
 *Given an array of numbers nums, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once.*  
@@ -958,3 +959,61 @@ public:
 
 *Runtime: 8 ms  
 Memory Usage: 7.5 MB*
+
+---
+## [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-li)
+
+*Given a singly linked list, determine if it is a palindrome.*  
+
+##### Example 1:
+```
+Input: 1->2
+Output: false
+```
+
+##### Example 2:
+```
+Input: 1->2->2->1
+Output: true
+```
+
+##### Follow up:
+* Could you do it in O(n) time and O(1) space?
+
+### Solution
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        int arr[50000] = {0};
+        int count = 0;
+
+        while (head != NULL) {
+            arr[count] = head->val;
+            head = head->next;
+            count ++;
+        }
+
+        int median = count / 2;
+        int i = 0;
+        while (median--) {
+            if (arr[i++] ^ arr[--count])
+                return false;
+        }
+
+        return true;
+    }
+};
+```
+
+*Runtime: 20 ms  
+Memory Usage: 11.1 MB*
