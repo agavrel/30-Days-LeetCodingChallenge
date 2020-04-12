@@ -1067,7 +1067,7 @@ Explanation: S becomes "c" while T becomes "b".
 
 ```c++
 class Solution {
-public:
+private:
     string res(string S) {
         string V = "";
 
@@ -1082,6 +1082,7 @@ public:
         return V;
     }
 
+public:
     bool backspaceCompare(string S, string T) {
         return res(S) == res(T);        
     }
@@ -1089,4 +1090,48 @@ public:
 ```
 
 *Runtime: 0 ms  
-Memory Usage: 6.4 MB*
+Memory Usage: 6.2 MB*
+
+
+---
+## [Day 12 - Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
+
+*We have a collection of stones, each stone has a positive integer weight.*  
+
+*If x == y, both stones are totally destroyed;*  
+*If x != y, the stone of weight x is totally destroyed, and the stone of weight y has new weight y-x.*  
+*At the end, there is at most 1 stone left.  Return the weight of this stone (or 0 if there are no stones left.)*  
+
+##### Example 1:
+```
+Input: [2,7,4,1,8,1]
+Output: 1
+Explanation:
+We combine 7 and 8 to get 1 so the array converts to [2,4,1,1,1] then,
+we combine 2 and 4 to get 2 so the array converts to [2,1,1,1] then,
+we combine 2 and 1 to get 1 so the array converts to [1,1,1] then,
+we combine 1 and 1 to get 0 so the array converts to [1] then that's the value of last stone.
+```
+
+##### Note:
+
+* 1 <= stones.length <= 30
+* 1 <= stones[i] <= 1000
+
+```c++
+class Solution {
+public:
+     int lastStoneWeight(vector<int>& A) {
+        priority_queue<int> pq(begin(A), end(A));
+        while (pq.size() > 1) {
+            int x = pq.top(); pq.pop();
+            int y = pq.top(); pq.pop();
+            if (x > y) pq.push(x - y);
+        }
+        return pq.empty() ? 0 : pq.top();
+    }
+};
+```
+
+*Runtime: 0 ms  
+Memory Usage: 6.2 MB*
